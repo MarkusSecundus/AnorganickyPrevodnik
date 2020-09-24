@@ -44,3 +44,6 @@ který obstarává obousměrný převod.
       - sůl je jakákoliv sloučenina libovolného kationtu s aniontem , jehož jméno má koncovku `"ovy"`
         - jméno soli vznikne takto: `(JmenoAniontu - "ovy") + " " + JmenoKationtu`  
           (např. `("siranovy" - "ovy") + " " + "sodny"  -> "siran sodny"`)
+      - pro přidání nové skupiny solí tedy stačí přidat novou klauzuli k predikátu [`iont_expl/2`](https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl#LC111:~:text=%25iont_expl(ExplicitneDefinovanyIontVInterniReprezentaci%2C%20Jmeno).)
+        - např. skupinu _oxidů_ přidáme takto: `iont_expl(ion(-2, "O"), "oxidovy").`  
+                obdobně _hydroxidy_: `iont_expl(ion(-1, [ion(-2, "O"), ion(1, "H")]),"hydroxidovy").`

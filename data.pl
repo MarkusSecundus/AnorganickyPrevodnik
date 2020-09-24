@@ -97,7 +97,7 @@ autogen_kationty(X) :- prvek(X,_, _), \+skip_auto_kationty(X).
 
 
 
-/*
+/*  Názorná ukázka, jak by bylo možné implementovat skupinu peroxidů.
 c_ROZUMNY_POCET_PEROXIDOVYCH_KYSLIKU(X) :- member(X, [2,4,6,8,10,12]).
 
 

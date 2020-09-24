@@ -31,7 +31,7 @@ který obstarává obousměrný převod.
   - **modul [_**data.pl**_][data pl]**  
     - seznam všech chemických prvků
       - pro přehlednost definovány zvlášť v modulu [_**seznam_prvku.pl**_][seznam prvku]
-      - modul [`data.pl`][data pl] ho importuje a predikát `prvek/3` z něj exportuje dál
+      - modul [`data.pl`][data pl] ho importuje a predikát `prvek/3` exportuje dál
     - koncovky pro automatickou tvorbu jmen iontů
     - seznam prvků, pro něž se mají automaticky generovat kationty (vygenerují se vždy se všemi oxidačními čísly)
     - seznam explicitně definovaných iontů  
@@ -44,8 +44,9 @@ který obstarává obousměrný převod.
           (např. `("siranovy" - "ovy") + " " + "sodny"  -> "siran sodny"`)
       - pro přidání nové skupiny solí tedy stačí přidat novou klauzuli k predikátu [`iont_expl/2`][predikat iont expl]
         - např.:  
-            skupinu _oxidů_ přidáme takto: `iont_expl(ion(-2, "O"), "oxidovy").`  
-            obdobně _hydroxidy_: `iont_expl(ion(-1, [ion(-2, "O"), ion(1, "H")]),"hydroxidovy").`
+            skupinu _oxidů_ přidáme takto: [`iont_expl(ion(-2, "O"), "oxidovy").`][ukazka impl oxidu]  
+            obdobně _hydroxidy_: [`iont_expl(ion(-1, [ion(-2, "O"), ion(1, "H")]),"hydroxidovy").`][ukazka impl hydroxidu]
+            [ukázka složitější implementace peroxidů][ukazka impl peroxidu]
             apod.
         - pro podrobnější instrukce k zápisu iontů v interní reprezentaci [viz][popis interni repr iontu].
 
@@ -65,3 +66,7 @@ který obstarává obousměrný převod.
 [predikat je molekula]: https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/anorg_prevodnik.pl#LC41:~:text=%25je_molekula(%2B%2DKationt%2C%20%2B%2DAniont%2C%20%2D%2BJmeno).
 [predikat iont expl]: https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl#LC111:~:text=%25iont_expl(ExplicitneDefinovanyIontVInterniReprezentaci%2C%20Jmeno).
 [predikat rozumny p kysl]: https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl#LC81:~:text=n%C3%A1zv%C5%AF-,c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE_NAVIC
+
+[ukazka impl oxidu]: https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl#LC124:~:text=iont_expl(ion(%2D2%2C%20%22O%22)%2C%20%22oxidovy%22).
+[ukazka impl hydroxidu]: https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl#LC126:~:text=iont_expl(ion(%2D1%2C%20%5Bion(%2D2%2C%20%22O%22)%2C%20ion(1%2C%20%22H%22)%5D)%2C%20%22hydroxidovy%22).
+[ukazka impl peroxidu]: https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl#LC100:~:text=%2F*%20%20N%C3%A1zorn%C3%A1%20uk%C3%A1zka%2C%20jak%20by%20bylo%20mo%C5%BEn%C3%A9%20implementovat%20skupinu%20peroxid%C5%AF.

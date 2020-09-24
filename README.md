@@ -1,6 +1,7 @@
 ## AnorganickyPrevodnik
 
 ####Převodník mezi vzorečky a systematickými názvy anorganických chemických sloučenin.
+
 #####Napsaný v Prologu.
   
   
@@ -8,7 +9,7 @@
 
 
 
-  
+
 Pro použití stačí načíst hlavní modul 'anorg_prevodnik.pl' a zavolat jeho predikát jmeno_vzorec/2,
 který obstarává obousměrný převod.
 

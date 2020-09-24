@@ -29,14 +29,13 @@ který obstarává obousměrný převod.
 &nbsp;     
 
 **Přidávání dat...**
-
   - **modul [_**data.pl**_](https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/data.pl)**  
     - seznam všech chemických prvků
       - pro přehlednost definovány zvlášť v modulu [_**seznam_prvku.pl**_](https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/seznam_prvku.pl)
       - modul `data` ho importuje a predikát `prvek/3` z něj exportuje dál
     - koncovky pro automatickou tvorbu jmen iontů
     - seznam prvků, pro něž se mají automaticky generovat kationty (vygenerují se vždy se všemi oxidačními čísly)
-    - seznam explicitně definovaných iontů
+    - seznam explicitně definovaných iontů  
 
   - **Přidávání nových skupin prvků...**
     - pro implementaci úplně nové skupiny prvků je třeba přidat novou klauzuli k predikátu [`je_molekula/3`](https://github.com/MarkusSecundus/AnorganickyPrevodnik/blob/master/anorg_prevodnik.pl#LC41:~:text=%25je_molekula(%2B%2DKationt%2C%20%2B%2DAniont%2C%20%2D%2BJmeno).)

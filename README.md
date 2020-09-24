@@ -1,7 +1,7 @@
 Převodník mezi vzorečky a systematickými názvy anorganických chemických sloučenin  
 ===================================================================================
 
-#### _Napsaný v [Prologu](https://en.wikipedia.org/wiki/Prolog)_  
+#### _Napsaný v [Prologu](https://www.swi-prolog.org/)_  
 
 &nbsp;   
 &nbsp;   

@@ -43,11 +43,11 @@ který obstarává obousměrný převod.
         - jméno soli vznikne takto: `(JmenoAniontu - "ovy") + " " + JmenoKationtu`  
           (např. `("siranovy" - "ovy") + " " + "sodny"  -> "siran sodny"`)
       - pro přidání nové skupiny solí tedy stačí přidat novou klauzuli k predikátu [`iont_expl/2`][predikat iont expl]
-        - např.:  
-            skupinu _oxidů_ přidáme takto: [`iont_expl(ion(-2, "O"), "oxidovy").`][ukazka impl oxidu]  
-            obdobně _hydroxidy_: [`iont_expl(ion(-1, [ion(-2, "O"), ion(1, "H")]),"hydroxidovy").`][ukazka impl hydroxidu]
-            [ukázka složitější implementace peroxidů][ukazka impl peroxidu]
-            apod.
+        - např.:   
+            skupinu _oxidů_ přidáme takto: [`iont_expl(ion(-2, "O"), "oxidovy").`][ukazka impl oxidu]   
+            obdobně _hydroxidy_: [`iont_expl(ion(-1, [ion(-2, "O"), ion(1, "H")]),"hydroxidovy").`][ukazka impl hydroxidu]   
+            [ukázka složitější implementace peroxidů][ukazka impl peroxidu]  
+            apod.  
         - pro podrobnější instrukce k zápisu iontů v interní reprezentaci [viz][popis interni repr iontu].
 
 

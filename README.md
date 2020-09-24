@@ -1,16 +1,18 @@
-# AnorganickyPrevodnik
-Převodník mezi vzorečky a systematickými názvy anorganických chemických sloučenin.
-Napsaný v Prologu.
--
--
--
--
--
--
+## AnorganickyPrevodnik
+
+####Převodník mezi vzorečky a systematickými názvy anorganických chemických sloučenin.
+#####Napsaný v Prologu.
+  
+  
+  
+
+
+
+  
 Pro použití stačí načíst hlavní modul 'anorg_prevodnik.pl' a zavolat jeho predikát jmeno_vzorec/2,
 který obstarává obousměrný převod.
 
-    - Alespoň jeden z argumentů nutně musí být poskytnut, jinak program spadne.
+    - Alespoň jeden z argumentů nutně musí být poskytnut, jinak predikát vždy selže.
 
     - Podporované sloučeniny: základní kyslíkaté kyseliny, jejich soli, oxidy, hydroxidy, sulfidy, halogenidy (implementované jako specielní případy solí)
 
@@ -28,3 +30,6 @@ který obstarává obousměrný převod.
       Obdobné platí i pro soli daných kyselin.
 
 
+Přidávání dat...
+
+  -

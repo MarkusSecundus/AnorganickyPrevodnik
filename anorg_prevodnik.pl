@@ -220,7 +220,7 @@ jmeno_na_vzorec(Jmeno, Vzorec) :- je_molekula_guard(Kat, An, Jmeno),
 
 %jmeno_vzorec(+-Jmeno, -+Vzorec).   -- obousměrný převod mezi systematickým názvem sloučeniny a jejím vzorečkem; vždy alespoň 1 argument musí být plně instanciován
 jmeno_vzorec(Jmeno, Vzorec) :- var(Jmeno) ->
-                                            setof(Jm, vzorec_na_jmeno(Vzorec, Jm), Jmena),  member(Jmeno, Jmena)
+                                            nonvar(Vzorec), setof(Jm, vzorec_na_jmeno(Vzorec, Jm), Jmena),  member(Jmeno, Jmena)
                                            ;setof(Vz, jmeno_na_vzorec(Jmeno, Vz), Vzorce),  member(Vzorec, Vzorce). 
 
 

@@ -80,6 +80,11 @@ koncovka_kyslikate_soli(8, "icelan").
 % které budou programem zkoušeny při odvozování kyselinových aniontů podle systematických názvů
 c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE_NAVIC(X) :- member(X, [1, 2, 3]).
 
+
+
+
+
+
 % pro tyto prvky nebudou automaticky generovány žádné kationty - všechny musí být zadány ručně v tomto modulu
 skip_auto_kationty("O").
 skip_auto_kationty("H").
@@ -87,6 +92,8 @@ skip_auto_kationty("F").
 
 % kationty budou automaticky generovány pro všechny prvky kromě těch zmíněných výše
 autogen_kationty(X) :- prvek(X,_, _), \+skip_auto_kationty(X).
+
+
 
 
 
@@ -101,7 +108,7 @@ iont_expl(ion(NOx, [mlt(Ox, ion(-1, "O"))]), "peroxidovy") :- negative(Ox,NOx) -
 
 %pro H a F jsme přeskočili automatickou generaci iontů - musíme je definovat explicitně
 %  pozn.: oba prvky jsou reálně schopny nabývat pouze oxidačního čísla 1
-%iont_expl(IontVInterniReprezentaci, Jmeno).
+%iont_expl(ExplicitneDefinovanyIontVInterniReprezentaci, Jmeno).
 iont_expl(ion(1, "H"), "vodny").
 iont_expl(ion(1, "F"), "fluorny").
 

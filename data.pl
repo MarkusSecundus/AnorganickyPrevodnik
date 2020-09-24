@@ -3,7 +3,7 @@
         iont_expl/2,  % musí definovat predikát pro specielní, explicitně zadané ionty
         autogen_kationty/1,  %musí definovat predikát určující, pro které prvky se mají implicitně vygenerovat základní kationty
         koncovka_kationtu/2, koncovka_kyslikate_soli/2,  %musí definovat predikát pro koncovky, skrze které se budou v závislosti na oxidačním čísle odvozovat z prvků názvy sloučenin 
-        c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE/1             %musí definovat
+        c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE_NAVIC/1             %musí definovat
  ]).
 :- use_module(seznam_prvku).
 :- use_module(util).
@@ -76,8 +76,9 @@ koncovka_kyslikate_soli(8, "icelan").
 */
 
 
-% počty kyslíků, které budou programem zkoušeny při odvozování kyselinových aniontů podle systematických názvů
-c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE(X) :- member(X, [1,2,3,4,5, 6, 7, 8, 9]).
+% počty kyslíků (navíc oproti minimu, s kterým by iont měl ox. číslo 0 nebo +1),
+% které budou programem zkoušeny při odvozování kyselinových aniontů podle systematických názvů
+c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE_NAVIC(X) :- member(X, [1, 2, 3]).
 
 % pro tyto prvky nebudou automaticky generovány žádné kationty - všechny musí být zadány ručně v tomto modulu
 skip_auto_kationty("O").

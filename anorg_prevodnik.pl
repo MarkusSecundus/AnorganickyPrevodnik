@@ -93,7 +93,7 @@ jmeno_kyseliny(JmenoIontu, JmenoKyseliny):- nonvar(JmenoIontu) -> string_vymenit
 
 
 %kyselinovy_aniont(+-Aniont, -+JmenoKyseliny).  -- Podle objektu kyselinového aniontu v interní reprezentaci zjistí jméno kyseliny, která by mu odpovídala po přidání příslušného množství vodíků, a obráceně.
-  % - Pokud je zadáno jméno, dohodí co nejvíce variant, které mu odpovídají - jak hodně jich bude, záleží na datovém predikátu 'c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE'.
+  % - Pokud je zadáno jméno, dohodí co nejvíce variant, které mu odpovídají - jak hodně jich bude, záleží na datovém predikátu 'c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE_NAVIC'.
 kyselinovy_aniont(ion(Ox, [Prv, mlt(Kysliku, ion(-2, "O"))]), JmenoKys) :-  var(JmenoKys) ->
                                                                              iont(Prv, JmenoIontu), get_ox_cislo(Prv, OxPrv), OxPrv > 0,
                                                                              (nonvar(Ox)->
@@ -107,7 +107,12 @@ kyselinovy_aniont(ion(Ox, [Prv, mlt(Kysliku, ion(-2, "O"))]), JmenoKys) :-  var(
                                                                              iont(Prv, JmenoIontu), get_ox_cislo(Prv, OxPrv), OxPrv > 0,
                                                                              (nonvar(Ox)->
                                                                                 Kysliku is (OxPrv-Ox) div 2
-                                                                              ; (var(Kysliku) -> c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE(Kysliku); true),
+                                                                              ;
+                                                                              (var(Kysliku) ->
+                                                                                ZaklKysliku is OxPrv div 2,
+                                                                                c_ROZUMNY_POCET_KYSLIKU_V_KYSELINE_NAVIC(KyslikuNavic),
+                                                                                Kysliku is ZaklKysliku + KyslikuNavic
+                                                                                ; true),
                                                                                  Ox is -2*Kysliku + OxPrv
                                                                              ),
                                                                               Ox < 0, Kysliku > 0.

@@ -97,8 +97,8 @@ autogen_kationty(X) :- prvek(X,_, _), \+skip_auto_kationty(X).
 
 
 
-/*  Názorná ukázka, jak by bylo možné implementovat skupinu peroxidů.
-c_ROZUMNY_POCET_PEROXIDOVYCH_KYSLIKU(X) :- member(X, [2,4,6,8,10,12]).  % při generování iontu z názvu připouštíme pouze peroxidy do určitého konečného množství kyslíků
+%  Názorná ukázka, jak by bylo možné implementovat skupinu peroxidů.
+c_ROZUMNY_POCET_PEROXIDOVYCH_KYSLIKU(2).  % při generování iontu z názvu připouštíme pouze peroxidy do určitého konečného množství kyslíků
 
   % aby program byl schopen uvažovat s existencí iontů kyslíku s ox. č. -1, musí být zadefinované ve formě nějakého 
   %jednoduchého iontu - dáváme si pozor, že nemá koncovku -ova, aby se z něj nemohly 'soli' odvozovat napřímo - to nechceme (kyslíky jsou v peroxidech vždy jedině po dvojicích)
@@ -106,7 +106,7 @@ iont_expl(ion(-1, "O"), "kyslik[1-]").
 
  % za peroxidový iont označíme všechny ionty sestávající z libovolného sudého počtu kyslíků majících ox. číslo -1
 iont_expl(ion(NOx, [mlt(Ox, ion(-1, "O"))]), "peroxidovy") :- negative(Ox,NOx) -> 0 is Ox mod 2 ; c_ROZUMNY_POCET_PEROXIDOVYCH_KYSLIKU(Ox), negative(Ox, NOx).
-*/
+%iont_expl(ion(2, [mlt(2, ion(-1, "O"))]), "peroxidovy").
 
 
 %pro H a F jsme přeskočili automatickou generaci iontů - musíme je definovat explicitně

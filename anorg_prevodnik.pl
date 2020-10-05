@@ -1,6 +1,8 @@
 
 :-module(anorg_prevodnik, [
-    jmeno_vzorec/2    % predikát pro obousměrný převod mezi systematickými jmény sloučenin a jejich vzorečky
+    jmeno_vzorec/2,    % predikát pro obousměrný převod mezi systematickými jmény sloučenin a jejich vzorečky
+    nm_it/2, nm/2,
+    na_ionty/2
   ]).
 :- use_module(data).
 :- use_module(util).
@@ -120,6 +122,9 @@ kyselinovy_aniont(ion(Ox, [Prv, mlt(Kysliku, ion(-2, "O"))]), JmenoKys) :-  var(
 % pomocná klauzule - aby byl akceptován i tvar, kdy je O[2-] jen jeden a není wrapován do mlt(1,..).
 kyselinovy_aniont(ion(Ox, [Prv, ion(-2, "O")]), JmenoKys) :- kyselinovy_aniont(ion(Ox, [Prv, mlt(1, ion(-2, "O"))]), JmenoKys).
 
+kyselinovy_aniont(ion(Ox, List), JmenoKys) :- var(JmenoKys), List = [_|[_|[_|_]]],
+                                              rozdel_na_kationt_a_aniont(List, Kat, An), kyselinovy_aniont(ion(Ox, [Kat, An]), JmenoKys).
+
 
 %kyselinovy_aniont(Ion, JmenoKys, JmenoAniontu).   -- alespoň 1 argument musí být instanciován.
   % - Obdoba dvouparametrové varianty, která zároveň odvozuje i jméno kyselinového aniontu (/ ze jména kys. aniontu)  
@@ -135,26 +140,26 @@ kyselinovy_aniont(Ion, JmenoKys, JmenoAniontu) :- (nonvar(JmenoAniontu)->
 
 
 
-%to_s(+Iont, -Vzorec).
+%to_s_impl(+Iont, -Vzorec).
   % Pro libovolnou chemickou sloučeninu v interní reprezentaci (ion(..,..)) vygeneruje odpovídající chemický vzorec. Funguje pouze jednosměrně.
-to_s(ion(_,[]), "") :- !.
+to_s_impl(ion(_,[]), "") :- !.
 
-to_s(ion(_, [H|Zb]), Str) :- to_s(H, ZacatekStr), to_s(ion(0, Zb), ZbStr), string_concat(ZacatekStr, ZbStr, Str), !.
-to_s(ion(_, Prvek), Prvek).     % pokud Prvek není list (to není - víme díky řezu výše), musí být řetězcem obsahujícím jméno prvku
+to_s_impl(ion(_, [H|Zb]), Str) :- to_s_impl(H, ZacatekStr), to_s_impl(ion(0, Zb), ZbStr), string_concat(ZacatekStr, ZbStr, Str), !.
+to_s_impl(ion(_, Prvek), Prvek).     % pokud Prvek není list (to není - víme díky řezu výše), musí být řetězcem obsahujícím jméno prvku
 
 %jednotkový násobič je zbytečný a úplně ho zredukujeme
-to_s(mlt(1, X), Str) :- to_s(X, Str), !.    
+to_s_impl(mlt(1, X), Str) :- to_s_impl(X, Str), !.    
 
 % vnořené násobiče zredukujeme do jednoho
-to_s(mlt(I, mlt(J, X)), Str) :- Mlt is I * J, to_s(mlt(Mlt, X), Str).
+to_s_impl(mlt(I, mlt(J, X)), Str) :- Mlt is I * J, to_s_impl(mlt(Mlt, X), Str).
 
 %několikanásobnou složenou skupiny vypíšeme dovnitř závorek a za ní napíšeme počet výskytů
-to_s(mlt(I, ion(Ox, [H|Zb])), Str) :- to_s(ion(Ox, [H|Zb]), Telo), string_concat("(", Telo, Zacatek), number_string(I, IAsNum), string_concat(")", IAsNum, Konec), string_concat(Zacatek, Konec, Str), !.
+to_s_impl(mlt(I, ion(Ox, [H|Zb])), Str) :- to_s_impl(ion(Ox, [H|Zb]), Telo), string_concat("(", Telo, Zacatek), number_string(I, IAsNum), string_concat(")", IAsNum, Konec), string_concat(Zacatek, Konec, Str), !.
 
 %za několikanásobný prvek jenom napíšeme počet výskytů, ale nebudeme ho dávat do závorek
-to_s(mlt(I, ion(_, Prvek)), Str) :- number_string(I, IAsNum), string_concat(Prvek, IAsNum, Str).
+to_s_impl(mlt(I, ion(_, Prvek)), Str) :- number_string(I, IAsNum), string_concat(Prvek, IAsNum, Str).
 
-
+to_s(Iont, Str) :- nm_it(Iont, NormIont), to_s_impl(NormIont, Str).
 
 %na_ionty(+Str, -Iont).
     % Převede vzoreček sloučeniny na odpovídající interní reprezentaci. Funguje pouze jednosměrně.
@@ -196,6 +201,27 @@ normalizuj_impl(mlt(Ox, X), mlt(NormOx, NormX)) :- Ox =\= 1, normalizuj_impl(X,P
 norm(A,B) :- normalizuj_impl(A, Vysl), (Vysl = A -> B = A; norm(Vysl, B)).
 
 
+
+
+nm([],[]) :- !.
+nm(X, X) :- string(X), !.
+nm(ion(Ox, [ion(Ox, X)]), ion(Ox, NormX)) :- nm(X, NormX), !.
+
+nm([ion(_,[])|Zb], NormZb) :- nm(Zb, NormZb), !.
+nm([ion(Ox, [H|Zb])|CelkZb], [NormH|NormZb]) :- nm(H, NormH), nm([ion(Ox, Zb)|CelkZb], NormZb), !.
+nm([X|Zb], [NormX| NormZb]) :- nm(X, NormX), nm(Zb, NormZb), !.
+
+nm(ion(Ox, X), ion(Ox, NormX)) :- nm(X, NormX), !.
+
+nm(mlt(0, _), ion(0, [])) :- !.
+nm(mlt(1, X), NormX) :- nm(X, NormX), !.
+nm(mlt(OxA, mlt(OxB, X)), mlt(Ox, NormX)) :- Ox is OxA * OxB,  nm(X, NormX), !.
+nm(mlt(MlA, ion(_, [mlt(MlB, X)])), mlt(Ml, ion(Ox, [NormX]))) :- Ml is MlA * MlB, nm(X, NormX), get_ox_cislo(NormX, Ox), !.
+nm(mlt(Ml, X), mlt(Ml, NormX)) :- nm(X, NormX), !.
+
+nm_it(A,B) :- nm(A, Vysl), (Vysl = A -> B = A ; nm_it(Vysl, B)).
+
+
 %rozdel_na_kationt_a_aniont(+List, -KationtNorm, -AniontNorm).
         % Přesekne daný list iontů na 2 části a z těch vytvoří ionty v interní reprezentaci v normálním tvaru.
 rozdel_na_kationt_a_aniont(List, KationtNorm, AniontNorm) :- append(Kationt, Aniont, List),
@@ -210,7 +236,7 @@ vzorec_na_jmeno(Vzorec, Jmeno) :- na_ionty(Vzorec, ion(0, List)), rozdel_na_kati
 %jmeno_na_vzorec(+Jmeno, -Vzorec).
         % Jednosměrný převodník systematického názvu sloučeniny na odpovídající vzoreček.
         %  - může vyhodit mnoho variant, i jednu variantu vícekrát
-jmeno_na_vzorec(Jmeno, Vzorec) :- je_molekula_guard(Kat, An, Jmeno),
+jmeno_na_vzorec(Jmeno, Vzorec, NormSloucenina) :- je_molekula_guard(Kat, An, Jmeno),
                                   get_ox_cislo(Kat, OxK), get_ox_cislo(An, OxA), MinusOxA is -OxA, nsn(OxK, MinusOxA, CelkoveOxCislo),
                                   div_with_default(CelkoveOxCislo, OxK, 1, PocetKationtu), div_with_default(CelkoveOxCislo, MinusOxA, 1, PocetAniontu),
                                    norm(ion(0, [mlt(PocetKationtu, Kat), mlt(PocetAniontu, An)]), NormSloucenina),
@@ -221,7 +247,7 @@ jmeno_na_vzorec(Jmeno, Vzorec) :- je_molekula_guard(Kat, An, Jmeno),
 %jmeno_vzorec(+-Jmeno, -+Vzorec).   -- obousměrný převod mezi systematickým názvem sloučeniny a jejím vzorečkem; vždy alespoň 1 argument musí být plně instanciován
 jmeno_vzorec(Jmeno, Vzorec) :- var(Jmeno) ->
                                             nonvar(Vzorec), setof(Jm, vzorec_na_jmeno(Vzorec, Jm), Jmena),  member(Jmeno, Jmena)
-                                           ;setof(Vz, jmeno_na_vzorec(Jmeno, Vz), Vzorce),  member(Vzorec, Vzorce). 
+                                           ;setof(Vz, jmeno_na_vzorec(Jmeno, Vz, _), Vzorce),  member(Vzorec, Vzorce). 
 
 
 
